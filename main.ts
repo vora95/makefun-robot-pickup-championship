@@ -19,6 +19,11 @@ if (LINE.length < 1 || LINE.length > 200) {
 if (LINE.trim().length === 0) {
   throw new Error("entry must not be only whitespace");
 }
+// The brief asks for a single line: an embedded newline would make the
+// entry two lines, so refuse it even though the length gate would pass.
+if (LINE.includes("\n") || LINE.includes("\r")) {
+  throw new Error("entry must be a single line");
+}
 
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", LINE, "utf8");
